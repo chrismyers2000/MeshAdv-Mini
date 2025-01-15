@@ -7,7 +7,7 @@ This makes for a good "base station" or "Router" node that can be mounted high o
 
 Some PCB's may be available here: https://frequencylabs.etsy.com New batch has arrived!
 
-![](https://github.com/chrismyers2000/MeshAdv-Pi-Hat/blob/2fb02e426bd7faad89f40714b303855255108235/V1.1/SMA/Photos/3D_PCB%20V1.1_SMA_Top.png)
+![](https://github.com/chrismyers2000/MeshAdv-Mini/blob/6a6333a63f6325c49912d2e187e8e1d9fce3f020/Photos/3D_PCB%20MeshAdv%20Mini%20Top.png)
 
 # Info
 
@@ -33,10 +33,10 @@ In /etc/meshtasticd/config.yaml, add or uncomment the following lines as needed.
 Lora:
   Module: sx1262  # Ebyte E22-900M30S and E22-900M33S choose only one module at a time
 # Module: sx1268  # Ebyte E22 400M30S and E22-400M33S
-  CS: 21
+  CS: 8
   IRQ: 16
   Busy: 20
-  Reset: 18
+  Reset: 24
   TXen: 13
   RXen: 12
   DIO3_TCXO_VOLTAGE: true
