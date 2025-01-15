@@ -5,7 +5,7 @@ This makes for a good "base station" or "Router" node that can be mounted high o
 
 
 
-Some PCB's may be available here: https://frequencylabs.etsy.com New batch has arrived!
+Some PCB's may be available here: https://frequencylabs.etsy.com 
 
 ![](https://github.com/chrismyers2000/MeshAdv-Mini/blob/8c91e4e708419ff6cd2cfe6af8cbe80a86944f7a/Photos/3D_PCB%20MeshAdv%20Mini%20side.png)
 
