@@ -31,9 +31,11 @@ https://meshtastic.org/docs/software/linux-native/
 In /etc/meshtasticd/config.yaml, add or uncomment the following lines as needed.
 ```yaml
 Lora:
-  Module: sx1262  # Ebyte E22-900M30S and E22-900M33S choose only one module at a time
-# Module: sx1268  # Ebyte E22 400M30S and E22-400M33S
-  CS: 8
+  Module: sx1262  # Ebyte E22-900M22S choose only one module at a time
+# Module: sx1268  # Ebyte E22 400M22S
+# JP1 will allow you to use 2 radios. CS1 is default, cut the jumper and solder the other pads for CS2. (This feature is experimental)
+  CS: 8  #  CS1 (Default)
+# CS: 7  #  CS2 
   IRQ: 16
   Busy: 20
   Reset: 24
