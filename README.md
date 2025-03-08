@@ -18,14 +18,14 @@ Fully Assembled units available here: https://frequencylabs.etsy.com
 |5    |3   |SCL        |(I2C)                  |   |   |6    |    |GND        |                                 |
 |7    |4   |GPSEN      |(GPS) GPS Enable       |   |   |8    |14  |UART TX    |(GPS)RX                          |
 |9    |    |GND        |                       |   |   |10   |15  |UART RX    |(GPS)TX                          |
-|11   |17  |PPS        |(GPS)                  |   |   |12   |18  |FANPWM     |Fan Speed PWM                    |
+|11   |17  |PPS        |(GPS) 1S Pulse         |   |   |12   |18  |FANPWM     |Fan Speed PWM                    |
 |13   |27  |Unused     |                       |   |   |14   |    |GND        |                                 |
 |15   |22  |Unused     |                       |   |   |16   |23  |Unused     |                                 |
-|17   |    |3.3V       |                       |   |   |18   |24  |RST        |(LoRa)                           |
+|17   |    |3.3V       |                       |   |   |18   |24  |RST        |(LoRa) Reset                     |
 |19   |10  |MOSI       |(LoRa)                 |   |   |20   |    |GND        |                                 |
 |21   |9   |MISO       |(LoRa)                 |   |   |22   |25  |Unused     |                                 |
-|23   |11  |CLK        |(LoRa)                 |   |   |24   |8   |CS1        |Chip Select 1 (Default)          |
-|25   |    |GND        |                       |   |   |26   |7   |CS2        |Chip Select 2 (For second Radio) |
+|23   |11  |CLK        |(LoRa)                 |   |   |24   |8   |CS         |(LoRa) Chip Select               |
+|25   |    |GND        |                       |   |   |26   |7   |           |                                 |
 |27   |0   |Unused     |                       |   |   |28   |1   |Unused     |                                 |
 |29   |5   |Unused     |                       |   |   |30   |    |GND        |                                 |
 |31   |6   |Unused     |                       |   |   |32   |12  |RXEN       |(LoRa) Recieve Enable            |
@@ -116,11 +116,8 @@ General:
 The MeshAdv Mini has an onboard Texas Instruments TMP102 temp sensor soldered in the center of the board near the RTC to get a general idea of board/enclosure temperature with 0.5°C accuracy. This sensor uses I2C address 48.
 
 <details>
-  <summary>Click to Show Instructions</summary>
+  <summary>▶️ Click to Show Instructions</summary>
 
-# Reading Temperature from TMP102
-
-This guide walks you through setting up, and reading temperature from a **TMP102 sensor** on a **Raspberry Pi** using Python.
 
 ---
 
@@ -258,6 +255,111 @@ print(f"Temperature: {temp_c:.2f}°C | {temp_f:.2f}°F")
 Now your **Raspberry Pi** reads temperature from the **TMP102 sensor** and prints it to the console! 🎉
 
 🚀
+</details>
+
+
+
+
+# Real-Time Clock
+
+The onboard Real-Time Clock (RTC) is a PCF8563 by NXP Semiconductor. This can be used to keep time in case of a power outage and GPS has not yet aquired a fix. The RTC uses I2C address 51.
+
+<details>
+  <summary>▶️ Click to Show Instructions</summary>
+
+  ---
+  
+If you previously setup the Temp sensor then skip to step 3.
+
+## Step 1: Enable I2C on Raspberry Pi
+1. Open a terminal and run:
+   ```sh
+   sudo raspi-config
+   ```
+2. Navigate to **Interface Options** → **I2C** → **Enable**.
+3. Reboot the Raspberry Pi:
+   ```sh
+   sudo reboot
+   ```
+
+## Step 2: Install I2C Tools
+To verify the connection, install `i2c-tools`:
+```sh
+sudo apt update
+sudo apt install -y i2c-tools
+```
+
+
+
+## Step 3: Load the PCF8563 Kernel Module
+
+Check if the RTC module is detected:
+```sh
+i2cdetect -y 1
+```
+You should see an entry at **0x51** (PCF8563 default address).
+
+Load the RTC driver manually:
+```sh
+sudo modprobe rtc-pcf8563
+```
+
+To make it load at boot, add it to **/boot/config.txt**:
+```sh
+sudo nano /boot/config.txt
+```
+Add the following line at the end:
+```
+dtoverlay=i2c-rtc,pcf8563
+```
+Save and exit (CTRL+X, then Y, then ENTER), then reboot:
+```sh
+sudo reboot
+```
+
+## Step 4: Configure the System Clock
+1. Disable the fake hardware clock:
+   ```sh
+   sudo systemctl disable fake-hwclock
+   sudo systemctl stop fake-hwclock
+   ```
+
+2. Sync the RTC with the system time:
+   ```sh
+   sudo hwclock --systohc
+   ```
+
+3. Enable reading from the RTC at boot:
+   ```sh
+   sudo hwclock -r
+   ```
+
+If the correct time is displayed, the RTC is working!
+
+## Step 5: Synchronizing with Network Time (Optional)
+To ensure the RTC stays accurate, sync with an NTP server when connected to the internet:
+```sh
+sudo timedatectl set-ntp on
+```
+Once synced, update the RTC:
+```sh
+sudo hwclock --systohc
+```
+
+## Step 6: Verify RTC on Reboot
+Reboot the Raspberry Pi and check if the RTC retains time:
+```sh
+sudo hwclock -r
+```
+If the correct time is displayed, your RTC setup is complete! 🎉
+
+## Troubleshooting
+- If `i2cdetect -y 1` doesn't show `0x51`, check your wiring.
+- Ensure `dtoverlay=i2c-rtc,pcf8563` is added correctly in `/boot/config.txt`.
+- Run `dmesg | grep rtc` to check for errors.
+
+
+
 </details>
 
 
