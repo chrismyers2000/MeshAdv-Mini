@@ -5,7 +5,7 @@ This makes for a good "base station" or "Router" node that can be mounted high o
 
 
 
-Some PCB's may be available here: https://frequencylabs.etsy.com 
+Fully Assembled units available here: https://frequencylabs.etsy.com 
 
 ![](https://github.com/chrismyers2000/MeshAdv-Mini/blob/8c91e4e708419ff6cd2cfe6af8cbe80a86944f7a/Photos/3D_PCB%20MeshAdv%20Mini%20side.png)
 
@@ -86,9 +86,7 @@ In /etc/meshtasticd/config.yaml, add or uncomment the following lines as needed.
 Lora:
   Module: sx1262  # Ebyte E22-900M22S choose only one module at a time
 # Module: sx1268  # Ebyte E22 400M22S
-# JP1 will allow you to use 2 radios. CS1 is default, cut the jumper and solder the other pads for CS2. (This feature is experimental)
-  CS: 8  #  CS1 (Default)
-# CS: 7  #  CS2 
+  CS: 8  
   IRQ: 16
   Busy: 20
   Reset: 24
@@ -115,7 +113,7 @@ General:
 
 # Temp Sensor TMP102
 
-The MeshAdv Mini has an onboard temp sensor soldered in the center of the board near the RTC to get a general idea of board/enclosure temperature. This sensor uses I2C address 48.
+The MeshAdv Mini has an onboard Texas Instruments TMP102 temp sensor soldered in the center of the board near the RTC to get a general idea of board/enclosure temperature with 0.5°C accuracy. This sensor uses I2C address 48.
 
 <details>
   <summary>Click to Show Instructions</summary>
@@ -152,17 +150,16 @@ sudo apt install i2c-tools python3-smbus -y
 ## Step 3: Verify the TMP102 Connection
 Find the **I2C address** of the TMP102 sensor:
 ```bash
-i2cdetect -y 1
+sudo i2cdetect -y 1
 ```
 - If connected correctly, you should see **0x48** (default address).
-- If you see **0x49, 0x4A, or 0x4B**, your sensor is using an alternative address.
 
 ---
 
 ## Step 4: Create the Python Script
 1. Open a new script file:
    ```bash
-   nano tmp102.py
+   sudo nano tmp102.py
    ```
 
 2. Paste the following Python code:
@@ -199,7 +196,7 @@ i2cdetect -y 1
 ## Step 5: Make the Script Executable
 Run this command to **make the script executable**:
 ```bash
-chmod +x tmp102.py
+sudo chmod +x tmp102.py
 ```
 
 ---
@@ -260,7 +257,7 @@ print(f"Temperature: {temp_c:.2f}°C | {temp_f:.2f}°F")
 ## ✅ You're All Set!
 Now your **Raspberry Pi** reads temperature from the **TMP102 sensor** and prints it to the console! 🎉
 
-Let me know if you need any modifications! 🚀
+🚀
 </details>
 
 
