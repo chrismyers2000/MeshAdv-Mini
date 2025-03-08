@@ -75,6 +75,7 @@ Official installation instructions: [https://meshtastic.org/docs/hardware/device
 
 # Configuration
 
+
 Click here for the new configuration method: [https://meshtastic.org/docs/hardware/devices/linux-native-hardware/#configuration]
 
 The old method is below and still works if you prefer it
@@ -111,4 +112,155 @@ Webserver:
 General:
   MaxNodes: 200
 ```
+
+# Temp Sensor TMP102
+
+The MeshAdv Mini has an onboard temp sensor soldered in the center of the board near the RTC to get a general idea of board/enclosure temperature. This sensor uses I2C address 48.
+
+<details>
+  <summary>Click to Show Instructions</summary>
+
+# Reading Temperature from TMP102
+
+This guide walks you through setting up, and reading temperature from a **TMP102 sensor** on a **Raspberry Pi** using Python.
+
+---
+
+
+## Step 1: Enable I2C on the Raspberry Pi
+1. Open the Raspberry Pi configuration tool:
+   ```bash
+   sudo raspi-config
+   ```
+2. Go to **"Interface Options" > "I2C"**, enable it, and exit.
+3. Reboot the Pi to apply changes:
+   ```bash
+   sudo reboot
+   ```
+
+---
+
+## Step 2: Install Required Packages
+Update your package list and install **I2C tools** and **Python SMBus**:
+```bash
+sudo apt update
+sudo apt install i2c-tools python3-smbus -y
+```
+
+---
+
+## Step 3: Verify the TMP102 Connection
+Find the **I2C address** of the TMP102 sensor:
+```bash
+i2cdetect -y 1
+```
+- If connected correctly, you should see **0x48** (default address).
+- If you see **0x49, 0x4A, or 0x4B**, your sensor is using an alternative address.
+
+---
+
+## Step 4: Create the Python Script
+1. Open a new script file:
+   ```bash
+   nano tmp102.py
+   ```
+
+2. Paste the following Python code:
+   ```python
+   #!/usr/bin/env python3
+   import smbus
+   import time
+
+   # I2C setup
+   bus = smbus.SMBus(1)  # Use I2C bus 1
+   TMP102_ADDR = 0x48  # Default I2C address for TMP102
+
+   def read_temp():
+       """Reads temperature from TMP102 and converts it to Celsius"""
+       raw = bus.read_word_data(TMP102_ADDR, 0)
+       
+       # Swap byte order (TMP102 stores in little-endian)
+       raw = ((raw << 8) & 0xFF00) + (raw >> 8)
+       
+       # Convert to temperature (TMP102 uses 12-bit resolution)
+       temp_c = (raw >> 4) * 0.0625
+       return temp_c
+
+   if __name__ == "__main__":
+       while True:
+           print(f"Temperature: {read_temp():.2f}°C")
+           time.sleep(1)
+   ```
+
+3. Save and exit (`CTRL+X`, then `Y`, then `Enter`).
+
+---
+
+## Step 5: Make the Script Executable
+Run this command to **make the script executable**:
+```bash
+chmod +x tmp102.py
+```
+
+---
+
+## Step 6: Run the Script
+Now, you can run the script in **three ways**:
+
+1️⃣ **Using Python**:
+   ```bash
+   python3 tmp102.py
+   ```
+
+2️⃣ **Directly from CLI** (since we added a shebang and made it executable):
+   ```bash
+   ./tmp102.py
+   ```
+
+3️⃣ **Run in the background** (so it doesn’t stop when you close SSH):
+   ```bash
+   nohup ./tmp102.py &
+   ```
+
+---
+
+## Step 7 (Optional): Auto-run at Boot
+To **automatically start the script when the Raspberry Pi boots**, add it to `crontab`:
+
+1. Open crontab:
+   ```bash
+   crontab -e
+   ```
+2. Add this line at the bottom:
+   ```
+   @reboot /home/pi/tmp102.py &
+   ```
+   *(Make sure the path to your script is correct!)*
+
+---
+
+## Bonus: Convert to Fahrenheit
+If you also want Fahrenheit output, modify the `read_temp()` function like this:
+```python
+def read_temp():
+    raw = bus.read_word_data(TMP102_ADDR, 0)
+    raw = ((raw << 8) & 0xFF00) + (raw >> 8)
+    temp_c = (raw >> 4) * 0.0625
+    temp_f = temp_c * 9.0 / 5.0 + 32.0
+    return temp_c, temp_f
+```
+And change the print statement:
+```python
+temp_c, temp_f = read_temp()
+print(f"Temperature: {temp_c:.2f}°C | {temp_f:.2f}°F")
+```
+
+---
+
+## ✅ You're All Set!
+Now your **Raspberry Pi** reads temperature from the **TMP102 sensor** and prints it to the console! 🎉
+
+Let me know if you need any modifications! 🚀
+</details>
+
 
