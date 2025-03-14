@@ -306,7 +306,7 @@ sudo modprobe rtc-pcf8563
 
 To make it load at boot, add it to **/boot/config.txt**:
 ```sh
-sudo nano /boot/config.txt
+sudo nano /boot/firmware/config.txt
 ```
 Add the following line at the end:
 ```
@@ -354,8 +354,8 @@ sudo hwclock -r
 If the correct time is displayed, your RTC setup is complete! 🎉
 
 ## Troubleshooting
-- If `i2cdetect -y 1` doesn't show `0x51`, check your wiring.
-- Ensure `dtoverlay=i2c-rtc,pcf8563` is added correctly in `/boot/config.txt`.
+
+- Ensure `dtoverlay=i2c-rtc,pcf8563` is added correctly in `/boot/firmware/config.txt`.
 - Run `dmesg | grep rtc` to check for errors.
 
 
