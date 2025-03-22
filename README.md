@@ -7,7 +7,7 @@ This makes for a good "base station" or "Router" node that can be mounted high o
 
 Fully Assembled units available here: https://frequencylabs.etsy.com 
 
-![](https://github.com/chrismyers2000/MeshAdv-Mini/blob/8c91e4e708419ff6cd2cfe6af8cbe80a86944f7a/Photos/3D_PCB%20MeshAdv%20Mini%20side.png)
+![](https://github.com/chrismyers2000/MeshAdv-Mini/blob/6fad3e7618cef262edfb8fcbe4b52011aaec8268/Photos/Top_3D_PCB%20MeshAdv%20Mini%20Stackable.png)
 
 # Info
 
@@ -118,6 +118,10 @@ Webserver:
 General:
   MaxNodes: 200
 ```
+
+# GPS
+
+more info coming soon
 
 # Temp Sensor TMP102
 
