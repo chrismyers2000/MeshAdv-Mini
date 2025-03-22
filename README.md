@@ -1,6 +1,6 @@
 # MeshAdv Mini
 
-The MeshAdv Mini is a Raspberry Pi hat designed to be used with the Linux-native version of Meshtastic known as meshtasticd. The board includes a +22dbm LoRa module, an onboard GPS module, Real Time Clock, Temperature Sensor, and breakout for I2C bus including two Qwiic connectors. 
+The MeshAdv Mini is a Raspberry Pi hat designed to be used with the Linux-native version of Meshtastic known as meshtasticd. The board includes a +22dbm LoRa module, integrated GPS module, HAT+ EEPROM, Temperature Sensor, 5V PWM Fan header, and breakout for I2C bus including two Qwiic connectors. 
 This makes for a good "base station" or "Router" node that can be mounted high on a pole and powered over POE (using separate POE adapter or Hat). No more need to retrieve the node everytime you want to update firmware, it can all be done remotely. It also makes it easy and reliable to connect to MQTT.
 
 
@@ -14,11 +14,11 @@ Fully Assembled units available here: https://frequencylabs.etsy.com
 |Pin# |GPIO|Pin Name   |Description            |   |   |Pin# |GPIO|Pin Name   |Description                      |
 |-----|----|-----------|-----------------------|---|---|-----|----|-----------|---------------------------------|
 |1    |    |3.3V       |                       |   |   |2    |    |5V         |                                 |
-|3    |2   |SDA        |(I2C)                  |   |   |4    |    |5V         |                                 |
-|5    |3   |SCL        |(I2C)                  |   |   |6    |    |GND        |                                 |
+|3    |2   |SDA        |(I2C1)                 |   |   |4    |    |5V         |                                 |
+|5    |3   |SCL        |(I2C1)                 |   |   |6    |    |GND        |                                 |
 |7    |4   |GPSEN      |(GPS) GPS Enable       |   |   |8    |14  |UART TX    |(GPS)RX                          |
 |9    |    |GND        |                       |   |   |10   |15  |UART RX    |(GPS)TX                          |
-|11   |17  |PPS        |(GPS) 1S Pulse         |   |   |12   |18  |FANPWM     |Fan Speed PWM                    |
+|11   |17  |PPS        |(GPS) 1 Sec Pulse      |   |   |12   |18  |FANPWM     |Fan Speed PWM                    |
 |13   |27  |Unused     |                       |   |   |14   |    |GND        |                                 |
 |15   |22  |Unused     |                       |   |   |16   |23  |Unused     |                                 |
 |17   |    |3.3V       |                       |   |   |18   |24  |RST        |(LoRa) Reset                     |
@@ -26,10 +26,10 @@ Fully Assembled units available here: https://frequencylabs.etsy.com
 |21   |9   |MISO       |(LoRa)                 |   |   |22   |25  |Unused     |                                 |
 |23   |11  |CLK        |(LoRa)                 |   |   |24   |8   |CS         |(LoRa) Chip Select               |
 |25   |    |GND        |                       |   |   |26   |7   |           |                                 |
-|27   |0   |Unused     |                       |   |   |28   |1   |Unused     |                                 |
+|27   |0   |SDA0       |(I2C0) For EEPROM      |   |   |28   |1   |SCL0       |(I2C0) For EEPROM                |
 |29   |5   |Unused     |                       |   |   |30   |    |GND        |                                 |
 |31   |6   |Unused     |                       |   |   |32   |12  |RXEN       |(LoRa) Recieve Enable            |
-|33   |13  |TXEN       |(LoRa) Transmit Enable |   |   |34   |    |GND        |                                 |
+|33   |13  |Unused     |                       |   |   |34   |    |GND        |                                 |
 |35   |19  |Unused     |                       |   |   |36   |16  |IRQ        |(LoRa)                           |
 |37   |26  |Unused     |                       |   |   |38   |20  |BUSY       |(LoRa)                           |
 |39   |    |GND        |                       |   |   |40   |21  |Unused     |                                 |
@@ -75,13 +75,21 @@ Official installation instructions: [https://meshtastic.org/docs/hardware/device
 
 # Configuration
 
+==This hat features HAT+ compatibility with an onboard EEPROM for quick setup. This feature is currently experimental==
+
+These instructions assume you are using a raspberry pi with Raspberry Pi OS. 
 
 Click here for the new configuration method: [https://meshtastic.org/docs/hardware/devices/linux-native-hardware/#configuration]
 
+---
 The old method is below and still works if you prefer it
 
 
-In /etc/meshtasticd/config.yaml, add or uncomment the following lines as needed.
+```bash
+sudo nano /etc/meshtasticd/config.yaml
+```
+add or uncomment the following lines as needed.
+
 ```yaml
 Lora:
   Module: sx1262  # Ebyte E22-900M22S choose only one module at a time
@@ -91,7 +99,7 @@ Lora:
   Busy: 20
   Reset: 24
   TXen: 13
-  RXen: 12
+  DIO2_AS_RF_SWITCH: true
   DIO3_TCXO_VOLTAGE: true
 
 GPS:
@@ -113,7 +121,7 @@ General:
 
 # Temp Sensor TMP102
 
-The MeshAdv Mini has an onboard Texas Instruments TMP102 temp sensor soldered in the center of the board near the RTC to get a general idea of board/enclosure temperature with 0.5°C accuracy. This sensor uses I2C address 48.
+The MeshAdv Mini has an onboard Texas Instruments TMP102 temp sensor soldered in the center of the board near the EEPROM to get a general idea of board/enclosure temperature with 0.5°C accuracy. This sensor uses I2C address 48.
 
 <details>
   <summary>▶️ Click to Show Instructions</summary>
@@ -211,43 +219,6 @@ Now, you can run the script in **three ways**:
    ./tmp102.py
    ```
 
-3️⃣ **Run in the background** (so it doesn’t stop when you close SSH):
-   ```bash
-   nohup ./tmp102.py &
-   ```
-
----
-
-## Step 7 (Optional): Auto-run at Boot
-To **automatically start the script when the Raspberry Pi boots**, add it to `crontab`:
-
-1. Open crontab:
-   ```bash
-   crontab -e
-   ```
-2. Add this line at the bottom:
-   ```
-   @reboot /home/pi/tmp102.py &
-   ```
-   *(Make sure the path to your script is correct!)*
-
----
-
-## Bonus: Convert to Fahrenheit
-If you also want Fahrenheit output, modify the `read_temp()` function like this:
-```python
-def read_temp():
-    raw = bus.read_word_data(TMP102_ADDR, 0)
-    raw = ((raw << 8) & 0xFF00) + (raw >> 8)
-    temp_c = (raw >> 4) * 0.0625
-    temp_f = temp_c * 9.0 / 5.0 + 32.0
-    return temp_c, temp_f
-```
-And change the print statement:
-```python
-temp_c, temp_f = read_temp()
-print(f"Temperature: {temp_c:.2f}°C | {temp_f:.2f}°F")
-```
 
 ---
 
@@ -260,103 +231,111 @@ Now your **Raspberry Pi** reads temperature from the **TMP102 sensor** and print
 
 
 
-# Real-Time Clock
+# PWM Fan
 
-The onboard Real-Time Clock (RTC) is a PCF8563 by NXP Semiconductor. This can be used to keep time in case of a power outage and GPS has not yet aquired a fix. The RTC uses I2C address 51.
+The onboard PWM fan connector can support 2 wire 5V fans (Always on), and 4-pin PWM (Tach not implimented). I recommend the [Noctua NF-A4x10 5V PWM 40mm](https://a.co/d/4vufchq) 0r [Noctua NF-A8 5V PWM 80mm](https://a.co/d/56CNeq1)
+
+|Pin|Name    |Color |
+|---|--------|------|
+|1  |Ground  |Black |
+|2  |5V      |Yellow|
+|3  |Tach(NA)|Green |
+|4  |PWM     |Blue  |
+
 
 <details>
   <summary>▶️ Click to Show Instructions</summary>
 
   ---
-  
-If you previously setup the Temp sensor then skip to step 3.
 
-## Step 1: Enable I2C on Raspberry Pi
-1. Open a terminal and run:
-   ```sh
+
+## Option 1: (Easiest - Works with Pi 4 and 5 only) Use the built-in fan control tool to turn fan on and off
+
+1. Open the raspi-config tool by running the following:
+   ```bash
    sudo raspi-config
    ```
-2. Navigate to **Interface Options** → **I2C** → **Enable**.
-3. Reboot the Raspberry Pi:
-   ```sh
-   sudo reboot
+2. Navigate to the "Performance Options" section.
+3. Select "Fan" and enable the fan control.
+4. Set the GPIO pin to 18 and temperature threshold for the fan to start. By default, the fan starts at 60°C, but you can modify this by editing the /boot/firmware/config.txt file manually.
+   ```bash
+   sudo nano /boot/firmware/config.txt
    ```
-
-## Step 2: Install I2C Tools
-To verify the connection, install `i2c-tools`:
-```sh
-sudo apt update
-sudo apt install -y i2c-tools
-```
-
-
-
-## Step 3: Load the PCF8563 Kernel Module
-
-Check if the RTC module is detected:
-```sh
-i2cdetect -y 1
-```
-You should see an entry at **0x51** (PCF8563 default address).
-
-Load the RTC driver manually:
-```sh
-sudo modprobe rtc-pcf8563
-```
-
-To make it load at boot, add it to **/boot/config.txt**:
-```sh
-sudo nano /boot/firmware/config.txt
-```
-Add the following line at the end:
-```
-dtoverlay=i2c-rtc,pcf8563
-```
-Save and exit (CTRL+X, then Y, then ENTER), then reboot:
-```sh
-sudo reboot
-```
-
-## Step 4: Configure the System Clock
-1. Disable the fake hardware clock:
-   ```sh
-   sudo systemctl disable fake-hwclock
-   sudo systemctl stop fake-hwclock
+   add the following:
+   ```bash
+   dtoverlay=gpio-fan,gpiopin=18,temp=60000
    ```
+6. Exit and reboot
 
-2. Sync the RTC with the system time:
-   ```sh
-   sudo hwclock --systohc
+   ---
+
+## Option 2 (works for most Pi models)
+
+1. Install the Rpi.GPIO Python library
+   ```bash
+   sudo apt update && sudo apt install python3-rpi.gpio
    ```
-
-3. Enable reading from the RTC at boot:
-   ```sh
-   sudo hwclock -r
+2. Create a new file called fan_control.py
+   ```bash
+   sudo nano fan_control.py
    ```
+3. Copy the following and save the file:
+   ```bash
+   #!/usr/bin/env python3
+   import RPi.GPIO as GPIO
+   import time
 
-If the correct time is displayed, the RTC is working!
+   # Configuration
+   FAN_PIN = 18
+   TEMP_THRESHOLD_LOW = 45.0  # Temperature (°C) at which fan runs at minimum speed
+   TEMP_THRESHOLD_HIGH = 60.0  # Temperature (°C) at which fan runs at max speed
 
-## Step 5: Synchronizing with Network Time (Optional)
-To ensure the RTC stays accurate, sync with an NTP server when connected to the internet:
-```sh
-sudo timedatectl set-ntp on
-```
-Once synced, update the RTC:
-```sh
-sudo hwclock --systohc
-```
+   # Initialize GPIO
+   GPIO.setmode(GPIO.BCM)
+   GPIO.setup(FAN_PIN, GPIO.OUT)
+   pwm = GPIO.PWM(FAN_PIN, 25000)  # 25 kHz PWM frequency
+   pwm.start(0)  # Start with fan off
 
-## Step 6: Verify RTC on Reboot
-Reboot the Raspberry Pi and check if the RTC retains time:
-```sh
-sudo hwclock -r
-```
-If the correct time is displayed, your RTC setup is complete! 🎉
+   def get_cpu_temp():
+       """Reads the CPU temperature."""
+       with open("/sys/class/thermal/thermal_zone0/temp", "r") as f:
+           return int(f.read()) / 1000  # Convert from millidegrees to degrees
 
-## Troubleshooting
+   def set_fan_speed(temp):
+       """Adjusts fan speed based on temperature."""
+       if temp < TEMP_THRESHOLD_LOW:
+           duty_cycle = 0  # Fan off
+       elif temp > TEMP_THRESHOLD_HIGH:
+           duty_cycle = 100  # Full speed
+       else:
+           # Scale between min and max speed
+           duty_cycle = (temp - TEMP_THRESHOLD_LOW) / (TEMP_THRESHOLD_HIGH - TEMP_THRESHOLD_LOW) * 100
+       pwm.ChangeDutyCycle(duty_cycle)
 
-- Ensure `dtoverlay=i2c-rtc,pcf8563` is added correctly in `/boot/firmware/config.txt`.
-- Run `dmesg | grep rtc` to check for errors.
+   try:
+       while True:
+           temp = get_cpu_temp()
+           set_fan_speed(temp)
+           print(f"CPU Temp: {temp:.1f}°C | Fan Speed: {int(pwm.ChangeDutyCycle)}%")
+           time.sleep(5)  # Check every 5 seconds
+   except KeyboardInterrupt:
+       print("Fan control stopped")
+       pwm.stop()
+       GPIO.cleanup()
+   ```
+4. Make the file executable
+   ```bash
+   chmod +x fan_control.py
+   ```
+5. Optional: Run script at boot
+   ```bash
+   crontab -e
+   ```
+   Add this line at the end:
+   ```bash
+   @reboot /usr/bin/python3 /path/to/fan_control.py &
+   ```
+   Hint: use pwd command to find your current directory. Change "/path/to" the location of your script.
 
 
 
