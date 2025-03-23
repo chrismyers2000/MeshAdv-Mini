@@ -9,7 +9,7 @@ This makes for a good "base station" or "Router" node that can be mounted high o
 
 Fully Assembled units available here: https://frequencylabs.etsy.com 
 
-== NOTICE!! always have an antenna connected to the Hat when powered on, failure to do so can damage the E22 module. ==
+== NOTICE!! always have an antenna connected to the LoRa module when powered on, failure to do so can damage the module. ==
 
 ![](https://github.com/chrismyers2000/MeshAdv-Mini/blob/6fad3e7618cef262edfb8fcbe4b52011aaec8268/Photos/Top_3D_PCB%20MeshAdv%20Mini%20Stackable.png)
 
@@ -90,7 +90,7 @@ These instructions assume you are using a raspberry pi with Raspberry Pi OS.
 ---
 ## Old Method:
 
-The old method is below and still works if you prefer it
+   - The old method is below and still works if you prefer it
 
 
 ```bash
@@ -126,14 +126,17 @@ Webserver:
 General:
   MaxNodes: 200
 ```
+## LoRa Setup:
+
+- You must now set the LoRa Region to be able to start using Meshtastic. [CLICK HERE](https://meshtastic.org/docs/getting-started/initial-config/#set-regional-settings) for info on how to set region settings. Please note: Linux-Native is currently unable to connect over bluetooth or to the Apple app. All other methods are working. 
 
 # GPS
 
-more info coming soon
+   - more info coming soon
 
 # Temp Sensor TMP102
 
-The MeshAdv Mini has an onboard Texas Instruments TMP102 temp sensor soldered in the center of the board near the EEPROM to get a general idea of board/enclosure temperature with 0.5°C accuracy. This sensor uses I2C address 48.
+   - The MeshAdv Mini has an onboard Texas Instruments TMP102 temp sensor soldered in the center of the board near the EEPROM to get a general idea of board/enclosure temperature with 0.5°C accuracy. This sensor uses I2C address 48.
 
 <details>
   <summary>▶️ Click to Show Instructions</summary>
@@ -245,7 +248,7 @@ Now your **Raspberry Pi** reads temperature from the **TMP102 sensor** and print
 
 # PWM Fan
 
-The onboard PWM fan connector can support 2 wire 5V fans (Always on), and 4-pin PWM (Tach not implimented). I recommend the [Noctua NF-A4x10 5V PWM 40mm](https://a.co/d/4vufchq) 0r [Noctua NF-A8 5V PWM 80mm](https://a.co/d/56CNeq1)
+   - The onboard PWM fan connector can support 2 wire 5V fans (Always on), and 4-pin PWM (Tach not implimented). I recommend the [Noctua NF-A4x10 5V PWM 40mm](https://a.co/d/4vufchq) 0r [Noctua NF-A8 5V PWM 80mm](https://a.co/d/56CNeq1)
 
 |Pin|Name    |Color |
 |---|--------|------|
