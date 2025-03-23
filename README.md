@@ -30,7 +30,7 @@ Fully Assembled units available here: https://frequencylabs.etsy.com
 |21   |9   |MISO       |(LoRa)                 |   |   |22   |25  |Unused     |                                 |
 |23   |11  |CLK        |(LoRa)                 |   |   |24   |8   |CS         |(LoRa) Chip Select               |
 |25   |    |GND        |                       |   |   |26   |7   |           |                                 |
-|27   |0   |SDA0       |(I2C0) For EEPROM      |   |   |28   |1   |SCL0       |(I2C0) For EEPROM                |
+|27   |0   |ID-SDA     |(I2C0) For HAT+ EEPROM |   |   |28   |1   |ID-SCL     |(I2C0) For HAT+ EEPROM           |
 |29   |5   |Unused     |                       |   |   |30   |    |GND        |                                 |
 |31   |6   |Unused     |                       |   |   |32   |12  |RXEN       |(LoRa) Recieve Enable            |
 |33   |13  |Unused     |                       |   |   |34   |    |GND        |                                 |
