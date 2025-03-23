@@ -1,11 +1,15 @@
 # MeshAdv Mini
 
-The MeshAdv Mini is a Raspberry Pi hat designed to be used with the Linux-native version of Meshtastic known as meshtasticd. The board includes a +22dbm LoRa module, integrated GPS module, HAT+ EEPROM, Temperature Sensor, 5V PWM Fan header, and breakout for I2C bus including two Qwiic connectors. 
+==The MeshAdv Mini has not been released, the project and this README is currently in progress==
+
+The MeshAdv Mini is a Raspberry Pi hat designed to be used with the Linux-native version of Meshtastic known as meshtasticd. It is similar to its big brother, the [MeshAdv Pi Hat](https://github.com/chrismyers2000/MeshAdv-Pi-Hat), but half the size and fits perfectly on the Pi Zero lineup. The board includes a +22dbm LoRa module, integrated GPS module, HAT+ EEPROM, Temperature Sensor, 5V PWM Fan header, and breakout for I2C bus including two Qwiic connectors. 
 This makes for a good "base station" or "Router" node that can be mounted high on a pole and powered over POE (using separate POE adapter or Hat). No more need to retrieve the node everytime you want to update firmware, it can all be done remotely. It also makes it easy and reliable to connect to MQTT.
 
 
 
 Fully Assembled units available here: https://frequencylabs.etsy.com 
+
+== NOTICE!! always have an antenna connected to the Hat when powered on, failure to do so can damage the E22 module. ==
 
 ![](https://github.com/chrismyers2000/MeshAdv-Mini/blob/6fad3e7618cef262edfb8fcbe4b52011aaec8268/Photos/Top_3D_PCB%20MeshAdv%20Mini%20Stackable.png)
 
@@ -34,7 +38,7 @@ Fully Assembled units available here: https://frequencylabs.etsy.com
 |37   |26  |Unused     |                       |   |   |38   |20  |BUSY       |(LoRa)                           |
 |39   |    |GND        |                       |   |   |40   |21  |Unused     |                                 |
 
-== NOTICE!! always have an antenna connected to the Hat when powered on, failure to do so can damage the E22 module. ==
+
 
 
 
@@ -42,12 +46,12 @@ Fully Assembled units available here: https://frequencylabs.etsy.com
 
 | Raspberry Pi Model      | Working? |
 |-------------------------|----------|
-| Raspberry Pi 1 Model A  | No       |
-| Raspberry Pi 1 Model A+ | No       |
-| Raspberry Pi 1 Model B  | No       |
-| Raspberry Pi 1 Model B+ | No       |
-| Raspberry Pi 2 Model B  | ???      |
-| Raspberry Pi 3 Model B  | ???      |
+| Raspberry Pi 1 Model A  | Never*   |
+| Raspberry Pi 1 Model A+ | ???      |
+| Raspberry Pi 1 Model B  | Never*   |
+| Raspberry Pi 1 Model B+ | ???      |
+| Raspberry Pi 2 Model B  | Yes      |
+| Raspberry Pi 3 Model B  | Yes      |
 | Raspberry Pi 3 Model B+ | Yes      |
 | Raspberry Pi 3 Model A+ | Yes      |
 | Raspberry Pi 4 Model B  | Yes      |
@@ -57,10 +61,10 @@ Fully Assembled units available here: https://frequencylabs.etsy.com
 | Raspberry Pi Zero       | Yes      |
 | Raspberry Pi Zero W     | Yes      |
 | Raspberry Pi Zero 2 W   | Yes      |
-| Raspberry Pi Pico       | Never    |
-| Raspberry Pi Pico W     | Never    |
+| Raspberry Pi Pico       | Never*   |
+| Raspberry Pi Pico W     | Never*   |
 
-
+*Raspberry Pi `1 Model A`, `1 Model B`, and `Pico` do not implement the 40-pin layout used in the MeshAdv Pi Hat.
 
 
 
@@ -79,9 +83,13 @@ Official installation instructions: [https://meshtastic.org/docs/hardware/device
 
 These instructions assume you are using a raspberry pi with Raspberry Pi OS. 
 
-Click here for the new configuration method: [https://meshtastic.org/docs/hardware/devices/linux-native-hardware/#configuration]
+## New Method:
+
+   - As methods keep changing, please [CLICK HERE](https://meshtastic.org/docs/hardware/devices/linux-native-hardware/#configuration) for the most up to date configuration process
 
 ---
+## Old Method:
+
 The old method is below and still works if you prefer it
 
 
