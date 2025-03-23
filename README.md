@@ -5,13 +5,14 @@
 The MeshAdv Mini is a Raspberry Pi hat designed to be used with the Linux-native version of Meshtastic known as meshtasticd. It is similar to its big brother, the [MeshAdv Pi Hat](https://github.com/chrismyers2000/MeshAdv-Pi-Hat), but half the size and fits perfectly on the Pi Zero lineup. The board includes a +22dbm LoRa module, integrated GPS module, HAT+ EEPROM, Temperature Sensor, 5V PWM Fan header, and breakout for I2C bus including two Qwiic connectors. 
 This makes for a good "base station" or "Router" node that can be mounted high on a pole and powered over POE (using separate POE adapter or Hat). No more need to retrieve the node everytime you want to update firmware, it can all be done remotely. It also makes it easy and reliable to connect to MQTT.
 
+---
 
+Fully Assembled units available here: https://frequencylabs.etsy.com
 
-Fully Assembled units available here: https://frequencylabs.etsy.com 
-
-== NOTICE!! always have an antenna connected to the LoRa module when powered on, failure to do so can damage the module. ==
 
 ![](https://github.com/chrismyers2000/MeshAdv-Mini/blob/6fad3e7618cef262edfb8fcbe4b52011aaec8268/Photos/Top_3D_PCB%20MeshAdv%20Mini%20Stackable.png)
+
+== NOTICE!! always have an antenna connected to the LoRa module when powered on, failure to do so can damage the module. ==
 
 # Info
 
@@ -130,6 +131,8 @@ General:
 
 - You must now set the LoRa Region to be able to start using Meshtastic. [CLICK HERE](https://meshtastic.org/docs/getting-started/initial-config/#set-regional-settings) for info on how to set region settings. Please note: Linux-Native is currently unable to connect over bluetooth or to the Apple app. All other methods are working. 
 
+---
+
 # GPS
    
    - The ATGM336H-5NR32 can receive the GPS and BeiDou constellations. It is fully integrated into the MeshAdv Mini with the ability to put the GPS to sleep for low power consumption and also utilize the PPS output for very precise time keeping, useful for running an NTP server alongside Meshtastic.
@@ -223,7 +226,7 @@ General:
       ```
       </details>
    
-  
+---  
    
 # Temp Sensor TMP102
 
@@ -335,116 +338,115 @@ Now your **Raspberry Pi** reads temperature from the **TMP102 sensor** and print
 </details>
 
 
-
+---
 
 # PWM Fan
 
    - The onboard PWM fan connector can support 2 wire 5V fans (Always on), and 4-pin PWM (Tach not implemented). I recommend the [Noctua NF-A4x10 5V PWM 40mm](https://a.co/d/4vufchq) 0r [Noctua NF-A8 5V PWM 80mm](https://a.co/d/56CNeq1)
 
-|Pin|Name    |Color |
-|---|--------|------|
-|1  |Ground  |Black |
-|2  |5V      |Yellow|
-|3  |NC      |Green |
-|4  |PWM     |Blue  |
-
-
-<details>
-  <summary>▶️ Click to Show Instructions</summary>
-
-  ---
-
-
-## Option 1: (Easiest - Works with Pi 4 and 5 only) Use the built-in fan control tool to turn fan on and off
-
-1. Open the `raspi-config` tool by running the following:
-   ```bash
-   sudo raspi-config
-   ```
-2. Navigate to the "Performance Options" section.
-3. Select "Fan" and enable the fan control.
-4. Set the GPIO pin to 18 and temperature threshold for the fan to start. By default, the fan starts at 60°C, but you can modify this by editing the `/boot/firmware/config.txt` file manually.
-   ```bash
-   sudo nano /boot/firmware/config.txt
-   ```
-   add the following:
-   ```bash
-   dtoverlay=gpio-fan,gpiopin=18,temp=60000
-   ```
-6. Exit and reboot
-
-   ---
-
-## Option 2 (works for most Pi models)
-
-1. Install the `Rpi.GPIO` Python library
-   ```bash
-   sudo apt update && sudo apt install python3-rpi.gpio
-   ```
-2. Create a new file called `fan_control.py`
-   ```bash
-   sudo nano fan_control.py
-   ```
-3. Copy the following and save the file:
-   ```bash
-   #!/usr/bin/env python3
-   import RPi.GPIO as GPIO
-   import time
-
-   # Configuration
-   FAN_PIN = 18
-   TEMP_THRESHOLD_LOW = 45.0  # Temperature (°C) at which fan runs at minimum speed
-   TEMP_THRESHOLD_HIGH = 60.0  # Temperature (°C) at which fan runs at max speed
-
-   # Initialize GPIO
-   GPIO.setmode(GPIO.BCM)
-   GPIO.setup(FAN_PIN, GPIO.OUT)
-   pwm = GPIO.PWM(FAN_PIN, 25000)  # 25 kHz PWM frequency
-   pwm.start(0)  # Start with fan off
-
-   def get_cpu_temp():
-       """Reads the CPU temperature."""
-       with open("/sys/class/thermal/thermal_zone0/temp", "r") as f:
-           return int(f.read()) / 1000  # Convert from millidegrees to degrees
-
-   def set_fan_speed(temp):
-       """Adjusts fan speed based on temperature."""
-       if temp < TEMP_THRESHOLD_LOW:
-           duty_cycle = 0  # Fan off
-       elif temp > TEMP_THRESHOLD_HIGH:
-           duty_cycle = 100  # Full speed
-       else:
-           # Scale between min and max speed
-           duty_cycle = (temp - TEMP_THRESHOLD_LOW) / (TEMP_THRESHOLD_HIGH - TEMP_THRESHOLD_LOW) * 100
-       pwm.ChangeDutyCycle(duty_cycle)
-
-   try:
-       while True:
-           temp = get_cpu_temp()
-           set_fan_speed(temp)
-           print(f"CPU Temp: {temp:.1f}°C | Fan Speed: {int(pwm.ChangeDutyCycle)}%")
-           time.sleep(5)  # Check every 5 seconds
-   except KeyboardInterrupt:
-       print("Fan control stopped")
-       pwm.stop()
-       GPIO.cleanup()
-   ```
-4. Make the file executable
-   ```bash
-   chmod +x fan_control.py
-   ```
-5. Optional: Run script at boot
-   ```bash
-   crontab -e
-   ```
-   Add this line at the end:
-   ```bash
-   @reboot /usr/bin/python3 /path/to/fan_control.py &
-   ```
-   Hint: use pwd command to find your current directory. Change "/path/to" the location of your script.
-
-
-
-</details>
-
+   - Setup:   
+      <details>
+        <summary>▶️ Click to Show Instructions</summary>
+      
+        ---
+      
+      
+      ## Option 1: (Easiest - Works with Pi 4 and 5 only) Use the built-in fan control tool to turn fan on and off
+      
+      1. Open the `raspi-config` tool by running the following:
+         ```bash
+         sudo raspi-config
+         ```
+      2. Navigate to the "Performance Options" section.
+      3. Select "Fan" and enable the fan control.
+      4. Set the GPIO pin to 18 and temperature threshold for the fan to start. By default, the fan starts at 60°C, but you can modify this by editing the `/boot/firmware/config.txt` file manually.
+         ```bash
+         sudo nano /boot/firmware/config.txt
+         ```
+         add the following:
+         ```bash
+         dtoverlay=gpio-fan,gpiopin=18,temp=60000
+         ```
+      6. Exit and reboot
+      
+         ---
+      
+      ## Option 2 (works for most Pi models)
+      
+      1. Install the `Rpi.GPIO` Python library
+         ```bash
+         sudo apt update && sudo apt install python3-rpi.gpio
+         ```
+      2. Create a new file called `fan_control.py`
+         ```bash
+         sudo nano fan_control.py
+         ```
+      3. Copy the following and save the file:
+         ```bash
+         #!/usr/bin/env python3
+         import RPi.GPIO as GPIO
+         import time
+      
+         # Configuration
+         FAN_PIN = 18
+         TEMP_THRESHOLD_LOW = 45.0  # Temperature (°C) at which fan runs at minimum speed
+         TEMP_THRESHOLD_HIGH = 60.0  # Temperature (°C) at which fan runs at max speed
+      
+         # Initialize GPIO
+         GPIO.setmode(GPIO.BCM)
+         GPIO.setup(FAN_PIN, GPIO.OUT)
+         pwm = GPIO.PWM(FAN_PIN, 25000)  # 25 kHz PWM frequency
+         pwm.start(0)  # Start with fan off
+      
+         def get_cpu_temp():
+             """Reads the CPU temperature."""
+             with open("/sys/class/thermal/thermal_zone0/temp", "r") as f:
+                 return int(f.read()) / 1000  # Convert from millidegrees to degrees
+      
+         def set_fan_speed(temp):
+             """Adjusts fan speed based on temperature."""
+             if temp < TEMP_THRESHOLD_LOW:
+                 duty_cycle = 0  # Fan off
+             elif temp > TEMP_THRESHOLD_HIGH:
+                 duty_cycle = 100  # Full speed
+             else:
+                 # Scale between min and max speed
+                 duty_cycle = (temp - TEMP_THRESHOLD_LOW) / (TEMP_THRESHOLD_HIGH - TEMP_THRESHOLD_LOW) * 100
+             pwm.ChangeDutyCycle(duty_cycle)
+      
+         try:
+             while True:
+                 temp = get_cpu_temp()
+                 set_fan_speed(temp)
+                 print(f"CPU Temp: {temp:.1f}°C | Fan Speed: {int(pwm.ChangeDutyCycle)}%")
+                 time.sleep(5)  # Check every 5 seconds
+         except KeyboardInterrupt:
+             print("Fan control stopped")
+             pwm.stop()
+             GPIO.cleanup()
+         ```
+      4. Make the file executable
+         ```bash
+         chmod +x fan_control.py
+         ```
+      5. Optional: Run script at boot
+         ```bash
+         crontab -e
+         ```
+         Add this line at the end:
+         ```bash
+         @reboot /usr/bin/python3 /path/to/fan_control.py &
+         ```
+         Hint: use pwd command to find your current directory. Change "/path/to" the location of your script.
+      
+      
+      
+      </details>
+      
+      |Pin|Name    |Color |
+      |---|--------|------|
+      |1  |Ground  |Black |
+      |2  |5V      |Yellow|
+      |3  |NC      |Green |
+      |4  |PWM     |Blue  |
 
