@@ -248,13 +248,13 @@ Now your **Raspberry Pi** reads temperature from the **TMP102 sensor** and print
 
 # PWM Fan
 
-   - The onboard PWM fan connector can support 2 wire 5V fans (Always on), and 4-pin PWM (Tach not implimented). I recommend the [Noctua NF-A4x10 5V PWM 40mm](https://a.co/d/4vufchq) 0r [Noctua NF-A8 5V PWM 80mm](https://a.co/d/56CNeq1)
+   - The onboard PWM fan connector can support 2 wire 5V fans (Always on), and 4-pin PWM (Tach not implemented). I recommend the [Noctua NF-A4x10 5V PWM 40mm](https://a.co/d/4vufchq) 0r [Noctua NF-A8 5V PWM 80mm](https://a.co/d/56CNeq1)
 
 |Pin|Name    |Color |
 |---|--------|------|
 |1  |Ground  |Black |
 |2  |5V      |Yellow|
-|3  |Tach(NA)|Green |
+|3  |NC      |Green |
 |4  |PWM     |Blue  |
 
 
