@@ -131,10 +131,100 @@ General:
 - You must now set the LoRa Region to be able to start using Meshtastic. [CLICK HERE](https://meshtastic.org/docs/getting-started/initial-config/#set-regional-settings) for info on how to set region settings. Please note: Linux-Native is currently unable to connect over bluetooth or to the Apple app. All other methods are working. 
 
 # GPS
-
-   - more info coming soon
+   
    - The ATGM336H-5NR32 can receive the GPS and BeiDou constellations. It is fully integrated into the MeshAdv Mini with the ability to put the GPS to sleep for low power consumption and also utilize the PPS output for very precise time keeping, useful for running an NTP server alongside Meshtastic.
-
+   - Start by following the official instructions to get the GPS working with meshtasticd [CLICK HERE](https://meshtastic.org/docs/hardware/devices/linux-native-hardware/#uart-raspberry-pi)
+   - ### PPS Time Correction:
+      <details>
+      <summary>▶️ Click to Show Instructions</summary>
+            
+   
+      ## 1. Enable PPS Support in Raspberry Pi OS
+      Edit the `config.txt` file:
+      
+      ```bash
+      sudo nano /boot/config.txt
+      ```
+      
+      Add the following line at the bottom:
+      ```bash
+      dtoverlay=pps-gpio,gpiopin=17
+      ```
+      
+      Save and exit (`CTRL+X`, then `Y`, then `ENTER`).
+      
+      Reboot the Raspberry Pi:
+      ```bash
+      sudo reboot
+      ```
+      
+      ---
+      
+      ## 2. Verify PPS Signal
+      After reboot, check if the **PPS device is detected**:
+      ```bash
+      ls /dev/pps*
+      ```
+      Expected output:
+      ```bash
+      /dev/pps0
+      ```
+      
+      Check if PPS is generating pulses:
+      ```bash
+      sudo ppstest /dev/pps0
+      ```
+      Expected output (timestamps every second):
+      ```
+      trying PPS source "/dev/pps0"
+      found PPS source "/dev/pps0"
+      ok, found 1 source(s), now start fetching data...
+      source 0 - assert 1672531199.999999999, sequence: 12345 - clear  0.000000000, sequence: 0
+      ```
+      
+      ---
+      
+      ## 3. Sync System Time with PPS
+      Install `pps-tools` and `chrony`:
+      ```bash
+      sudo apt update
+      sudo apt install pps-tools chrony
+      ```
+      
+      Edit the **Chrony config**:
+      ```bash
+      sudo nano /etc/chrony/chrony.conf
+      ```
+      
+      Add the following at the end:
+      ```bash
+      # Use PPS signal for accurate timing
+      refclock PPS /dev/pps0 lock GPS prefer
+      ```
+      
+      Restart Chrony:
+      ```bash
+      sudo systemctl restart chronyd
+      ```
+      
+      Check PPS synchronization:
+      ```bash
+      chronyc sources -v
+      ```
+      Expected output should show PPS as a preferred time source.
+      
+      ---
+   
+      ## 4. (Optional) Sync GPS Time via NMEA
+      If you want **both GPS time and PPS**, modify `chrony.conf` to include:
+      ```bash
+      refclock SHM 0 delay 0.5 refid GPS
+      refclock PPS /dev/pps0 lock GPS prefer
+      ```
+      </details>
+   
+  
+   
 # Temp Sensor TMP102
 
    - The MeshAdv Mini has an onboard Texas Instruments TMP102 temp sensor soldered in the center of the board near the EEPROM to get a general idea of board/enclosure temperature with 0.5°C accuracy. This sensor uses I2C address 48.
