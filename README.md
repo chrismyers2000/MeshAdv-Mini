@@ -133,6 +133,7 @@ General:
 # GPS
 
    - more info coming soon
+   - The ATGM336H-5NR32 can receive the GPS and BeiDou constellations. It is fully integrated into the MeshAdv Mini with the ability to put the GPS to sleep for low power consumption and also utilize the PPS output for very precise time keeping, useful for running an NTP server alongside Meshtastic.
 
 # Temp Sensor TMP102
 
@@ -222,7 +223,7 @@ sudo chmod +x tmp102.py
 ---
 
 ## Step 6: Run the Script
-Now, you can run the script in **three ways**:
+Now, you can run the script in **two ways**:
 
 1️⃣ **Using Python**:
    ```bash
@@ -266,13 +267,13 @@ Now your **Raspberry Pi** reads temperature from the **TMP102 sensor** and print
 
 ## Option 1: (Easiest - Works with Pi 4 and 5 only) Use the built-in fan control tool to turn fan on and off
 
-1. Open the raspi-config tool by running the following:
+1. Open the `raspi-config` tool by running the following:
    ```bash
    sudo raspi-config
    ```
 2. Navigate to the "Performance Options" section.
 3. Select "Fan" and enable the fan control.
-4. Set the GPIO pin to 18 and temperature threshold for the fan to start. By default, the fan starts at 60°C, but you can modify this by editing the /boot/firmware/config.txt file manually.
+4. Set the GPIO pin to 18 and temperature threshold for the fan to start. By default, the fan starts at 60°C, but you can modify this by editing the `/boot/firmware/config.txt` file manually.
    ```bash
    sudo nano /boot/firmware/config.txt
    ```
@@ -286,11 +287,11 @@ Now your **Raspberry Pi** reads temperature from the **TMP102 sensor** and print
 
 ## Option 2 (works for most Pi models)
 
-1. Install the Rpi.GPIO Python library
+1. Install the `Rpi.GPIO` Python library
    ```bash
    sudo apt update && sudo apt install python3-rpi.gpio
    ```
-2. Create a new file called fan_control.py
+2. Create a new file called `fan_control.py`
    ```bash
    sudo nano fan_control.py
    ```
