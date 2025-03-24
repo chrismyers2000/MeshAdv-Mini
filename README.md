@@ -1,8 +1,11 @@
-# MeshAdv Mini
+![](https://github.com/chrismyers2000/MeshAdv-Mini/blob/298581bdf106296083a373f97896de44633c6cd1/Data/Misc/MeshAdv%20Mini%20Logo.png)
+
+---
+
 
 ==The MeshAdv Mini has not been released, the project and this README is currently in progress==
 
-The MeshAdv Mini is a Raspberry Pi hat designed to be used with the Linux-native version of Meshtastic known as meshtasticd. It is similar to its big brother, the [MeshAdv Pi Hat](https://github.com/chrismyers2000/MeshAdv-Pi-Hat), but half the size and fits perfectly on the Pi Zero lineup. The board includes a +22dbm LoRa module, integrated GPS module, HAT+ EEPROM, Temperature Sensor, 5V PWM Fan header, and breakout for I2C bus including two Qwiic connectors. 
+The MeshAdv Mini is a Lora/GPS Raspberry Pi hat designed to be used with the Linux-native version of [Meshtastic](https://meshtastic.org/) known as [meshtasticd](https://meshtastic.org/docs/hardware/devices/linux-native-hardware/). It is similar to its big brother, the [MeshAdv Pi Hat](https://github.com/chrismyers2000/MeshAdv-Pi-Hat), but half the size and fits perfectly on the Pi Zero lineup. The board includes a +22dbm LoRa module, integrated GPS module, HAT+ EEPROM, Temperature Sensor, 5V PWM Fan header, and breakout for I2C bus including two Qwiic connectors. 
 This makes for a good "base station" or "Router" node that can be mounted high on a pole and powered over POE (using separate POE adapter or Hat). No more need to retrieve the node everytime you want to update firmware, it can all be done remotely. It also makes it easy and reliable to connect to MQTT.
 
 ---
