@@ -149,7 +149,7 @@ General:
       Edit the `config.txt` file:
       
       ```bash
-      sudo nano /boot/config.txt
+      sudo nano /boot/firmware/config.txt
       ```
       
       Add the following line at the bottom:
@@ -175,6 +175,11 @@ General:
       ```bash
       /dev/pps0
       ```
+      Install `pps-tools`:
+      ```bash
+      sudo apt update
+      sudo apt install pps-tools
+      ```
       
       Check if PPS is generating pulses:
       ```bash
@@ -191,10 +196,10 @@ General:
       ---
       
       ## 3. Sync System Time with PPS
-      Install `pps-tools` and `chrony`:
+      Install `chrony`:
       ```bash
       sudo apt update
-      sudo apt install pps-tools chrony
+      sudo apt install chrony
       ```
       
       Edit the **Chrony config**:
