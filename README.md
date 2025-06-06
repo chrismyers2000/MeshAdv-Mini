@@ -139,6 +139,7 @@ General:
 # GPS
    
    - The ATGM336H-5NR32 can receive the GPS and BeiDou constellations. It is fully integrated into the MeshAdv Mini with the ability to put the GPS to sleep for low power consumption and also utilize the PPS output for very precise time keeping, useful for running an NTP server alongside Meshtastic.
+   - The recommended GPS backup battery is the official [Raspberry Pi 5 RTC battery](https://www.raspberrypi.com/products/rtc-battery/). This is a rechargable battery so make sure you do not use a standard non-rechargable battery.
    - Start by following the official instructions to get the GPS working with meshtasticd [CLICK HERE](https://meshtastic.org/docs/hardware/devices/linux-native-hardware/#uart-raspberry-pi)
    - ### PPS Time Correction:
       <details>
