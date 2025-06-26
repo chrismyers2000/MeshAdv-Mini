@@ -89,7 +89,7 @@ These instructions assume you are using a raspberry pi with Raspberry Pi OS.
 
 ## New Method:
 
-   - As methods keep changing, please [CLICK HERE](https://meshtastic.org/docs/hardware/devices/linux-native-hardware/#configuration) for the most up to date configuration process
+   - As methods keep changing, please [CLICK HERE](https://meshtastic.org/docs/hardware/devices/linux-native-hardware/?os=raspbian) for the most up to date configuration process
    - There was an error in the initial config.d file. It has been fixed but may take a while to migrate to Beta. Please copy the file from here in the meantime: [Download](https://github.com/chrismyers2000/MeshAdv-Mini/blob/4c952fa066cf92b278a3ad54c8098b99bcde8b93/Data/lora-MeshAdv-Mini-900M22S.yaml)
 ---
 ## Old Method:
