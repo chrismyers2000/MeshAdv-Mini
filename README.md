@@ -344,7 +344,7 @@ Now, you can run the script in **two ways**:
    python3 tmp102.py
    ```
 
-2️⃣ **Directly from CLI** (since we added a shebang and made it executable):
+2️⃣ **Directly from CLI**:
    ```bash
    ./tmp102.py
    ```
@@ -352,10 +352,6 @@ Now, you can run the script in **two ways**:
 
 ---
 
-## ✅ You're All Set!
-Now your **Raspberry Pi** reads temperature from the **TMP102 sensor** and prints it to the console! 🎉
-
-🚀
 </details>
 
 
