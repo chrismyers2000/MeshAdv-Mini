@@ -9,7 +9,23 @@ This is a python tool that can do it all, install meshtasticd, setup all the nee
 - Known bug: After installing Meshtastic CLI, you need to close the GUI and terminal window so the CLI can show up in the proper PATH.
 
   ![](https://github.com/chrismyers2000/MeshAdv-Mini/blob/b9b1c6b6aad49988e4e0369fb85cd48316f5062c/Data/Misc/ConfigTool1.jpg)
-  
+- Installation
+
+  - Copy the python script to your pi
+  ```bash
+  wget https://raw.githubusercontent.com/chrismyers2000/MeshAdv-Mini/refs/heads/main/Data/Misc/Installer%20Scripts/meshtastic_configuration_tool.py
+  ```
+
+  - Change permissions to executable
+  ```bash
+  sudo chmod +x meshtastic_configuration_tool.py
+  ```
+
+  - Run the script
+  ```bash
+  ./meshtastic_configuration_tool.py
+  ```
+  - Please note, you will need to reboot a few times for everything to be fully functional
 
   ---
 ## 2. Text based installer - Minimal at this point
