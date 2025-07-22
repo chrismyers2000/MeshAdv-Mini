@@ -3,13 +3,16 @@
   A collection of helper scripts designed to make your life easier
 
   ---
-  ## Meshtastic Configuration Tool (Python GUI)
-   - 
-  
+## 1. Meshtastic Configuration Tool (Python GUI)
+
+This is a python tool that can do it all, install meshtasticd, setup all the needed /boot/firmware/config.txt options, choose your hat config file, edit /etc/meshtasticd/config.yaml, even help you install other helpful tools like Meshtastic Python CLI. This tool will help get you from fresh install to sending a test message. Designed for Raspberry Pi OS (Bookworm). Tested on Pi 4 and Pi 5. 
+- Known bug: After installing Meshtastic CLI, you need to close the GUI and terminal window so the CLI can show up in the proper PATH.
+
+  ![](https://github.com/chrismyers2000/MeshAdv-Mini/blob/b9b1c6b6aad49988e4e0369fb85cd48316f5062c/Data/Misc/ConfigTool1.jpg)
   
 
   ---
-  ## Text based installer - Minimal at this point
+## 2. Text based installer - Minimal at this point
 
 This is a helper script designed to help you choose which channel (beta/alpha/daily) of meshtasticd to install for raspberry pi OS.
 It is especially helpful if you've already installed the beta and are struggling to figure out how to update to alpha. This script will handle most of that for you.
