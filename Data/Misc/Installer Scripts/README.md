@@ -1,12 +1,19 @@
 # Installer Scripts 
+  
+  A collection of helper scripts designed to make your life easier
+
+  ---
+  ## Meshtastic Configuration Tool (Python GUI)
+   - 
+  
+  
+
+  ---
+  ## Text based installer - Minimal at this point
 
 This is a helper script designed to help you choose which channel (beta/alpha/daily) of meshtasticd to install for raspberry pi OS.
 It is especially helpful if you've already installed the beta and are struggling to figure out how to update to alpha. This script will handle most of that for you.
 This is experimental at this point. You may need to check your config files in case they've been overwritten. Right now, it only installs meshtasticd, you will still need to enable SPI, add the proper dtoverlays, etc.
-
-  ---
-
-  ## How to use
 
   - Copy the script to your pi
   ```bash
