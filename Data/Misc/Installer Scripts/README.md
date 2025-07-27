@@ -8,22 +8,22 @@
 This is a python tool that can do it all, install meshtasticd, setup all the needed /boot/firmware/config.txt options, choose your hat config file, edit /etc/meshtasticd/config.yaml, even help you install other helpful tools like Meshtastic Python CLI. This tool will help get you from fresh install to sending a test message. Designed for Raspberry Pi OS (Bookworm). Tested on Pi 4 and Pi 5. 
 - Known bug: After installing Meshtastic CLI, you need to close the GUI and terminal window so the CLI can show up in the proper PATH.
 
-  ![](https://github.com/chrismyers2000/MeshAdv-Mini/blob/b9b1c6b6aad49988e4e0369fb85cd48316f5062c/Data/Misc/ConfigTool1.jpg)
+  ![](https://github.com/chrismyers2000/MeshAdv-Mini/blob/91b49a7bfb1313022056c8d00c86d2c37b2c1c62/Data/Misc/ConfigTool1.png)
 - Installation
 
   - Copy the python script to your pi
   ```bash
-  wget https://raw.githubusercontent.com/chrismyers2000/MeshAdv-Mini/refs/heads/main/Data/Misc/Installer%20Scripts/meshtastic_configuration_tool.py
+  wget https://raw.githubusercontent.com/chrismyers2000/MeshAdv-Mini/refs/heads/main/Data/Misc/Installer%20Scripts/meshtasticd_config_tool_V2.py
   ```
 
   - Change permissions to executable
   ```bash
-  sudo chmod +x meshtastic_configuration_tool.py
+  sudo chmod +x meshtasticd_config_tool_V2.py
   ```
 
   - Run the script
   ```bash
-  ./meshtastic_configuration_tool.py
+  ./meshtasticd_config_tool_V2.py
   ```
   - Please note, you will need to reboot a few times for everything to be fully functional
 
