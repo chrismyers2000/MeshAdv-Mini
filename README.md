@@ -155,6 +155,23 @@ General:
         ```bash
         gpio=4=op,dh #Enables GPS
         ```
+   - Verify that your GPS serial port is defined in /etc/meshtasticd/config.yaml. This will be either /dev/ttyAMA0 for pi 5, or /dev/ttyS0 for earlier pis.
+
+       Edit the `config.yaml` file:
+       ```bash
+       sudo nano /etc/meshtasticd/config.yaml
+       ```
+
+       Make sure the GPS line looks something like this:
+       ```bash
+       GPS:
+         SerialPath: /dev/ttyS0
+       ```
+       Restart meshtasticd:
+       ```bash
+       sudo systemctl stop meshtasticd && sudo systemctl start meshtasticd
+       ```
+   - Now you must enable the GPS in the Position module. This will be labeled "GPS Mode", change it to Enabled and save. (You can do this using the web interface, remember to enable the web interface in the /etc/meshtasticd/config.yaml and restart meshtasticd. Remember to add the port number to the end of your IP address in the web browser).
          
    - ### PPS Time Correction:
       <details>
