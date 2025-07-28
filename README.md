@@ -74,8 +74,8 @@ Fully Assembled units available here: https://frequencylabs.etsy.com
 
 # Installing Meshtasticd
 
-You can try my new [Configuration Tool](https://github.com/chrismyers2000/MeshAdv-Mini/tree/cfe7c63e600e69397a781adecdd410e8c46fbabc/Data/Misc/Installer%20Scripts), It can install and configure everything you need to get up and running, otherwise continue below with the official instructions.
-![](https://github.com/chrismyers2000/MeshAdv-Mini/blob/ec2a995e39d45e401da62157a0b0d612127c36f6/Data/Misc/ConfigTool1.png)
+You can try my new [Configuration Tool](https://github.com/chrismyers2000/Meshtasticd-Configuration-Tool), It can install and configure everything you need to get up and running, otherwise continue below with the official instructions.
+![](https://github.com/chrismyers2000/Meshtasticd-Configuration-Tool/blob/b0ad9208a440797aa12c39bf289b6498ebf8cc92/Gui/ConfigTool1.png)
 
 ~~Watch this video first: [How to install Meshtastic on Raspberry Pi](https://www.youtube.com/watch?v=vLGoEPNT0Mk)~~ This video covers the old method, still a good video but out of date.
 
